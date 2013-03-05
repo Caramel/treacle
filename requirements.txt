@@ -1,0 +1,13 @@
+distribute>=0.6.35
+pytz>=2012j
+
+# There is an issue with iCalendar not pulling in this dependency, which is
+# only fixed in the development version.
+python-dateutil>=2.1
+
+icalendar>=3.3
+configparser>=3.2.0r2
+argparse>=1.2.1
+
+nose
+

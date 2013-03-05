@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 """
 treacle: Business hours routing for Asterisk calls.
-Written by Michael Farrell (2013)
+Written by Michael Farrell @ Caramel (2013)
 """
 
-
 from configparser import ConfigParser
-from argparse import ArgumentParser, FileType
 from pytz import timezone, utc
 from calendar import day_abbr, day_name
 from datetime import datetime
 from icalendar import Calendar
 
+__all__ = [
+	'Office',
+	'Treacle'
+]
 
-DEFAULT_CONFIG = '/etc/treacle.ini'
+
 LOCALE_SHORT_DAYS = [x.lower() for x in day_abbr]
 LOCALE_LONG_DAYS = [x.lower() for x in day_name]
 
@@ -120,9 +122,21 @@ class Office(object):
 		return False
 
 class Treacle(object):
-	def __init__(self, config=None):
+	def __init__(self, config, config_as_dict=False):
+		"""
+		
+		:param config: Configuration source to use
+		:type config: file or dict
+		
+		:param config_as_dict: Treat the parameter `config`_ as a `dict`_ rather than a `file`_, if True.
+		:type config_as_dict: bool
+		
+		"""
 		self.config = ConfigParser(strict=True)
-		self.config.read_file(config)
+		if config_as_dict:
+			self.config.read_dict(config)
+		else:
+			self.config.read_file(config)
 
 		self._parse_config()
 		
@@ -164,88 +178,4 @@ class Treacle(object):
 		else:
 			# check specific office
 			return self.offices[office].in_hours(when)
-		
-		
-	
 
-
-def main():
-	parser = ArgumentParser(
-		description="treacle provides in-hours call routing for Asterisk"
-	)
-	
-	group = parser.add_mutually_exclusive_group(required=True)
-
-	group.add_argument('-a', '--agi',
-		dest='agi_variable',
-		default='CARHOURS',
-		metavar='VAR',
-		nargs='?',
-		help=
-			'Expect an Asterisk AGI session to handle hours-routing, setting '
-			'the following dialplan variable to 1 in the case of it being '
-			'office hours. '
-			'[default: %(default)s]'
-	)
-
-	group.add_argument('-s', '--standalone',
-		dest='standalone',
-		action='store_true',
-		default=False,
-		help=
-			'Run in stand-alone mode, returning error code 0 if in-hours, and '
-			'1 otherwise.'
-		
-	)
-
-	parser.add_argument('-c', '--config',
-		dest='config',
-		default=None,
-		type=FileType('rb'),
-		help='Configuration INI file to use [default: %s]' % DEFAULT_CONFIG,
-		required=False
-	)
-	
-	group = parser.add_mutually_exclusive_group(required=True)
-	
-	group.add_argument('-o', '--office',
-		metavar='OFFICE',
-		dest='office',
-		nargs='?',
-		help='Office to look up'
-	)
-	
-	group.add_argument('-A', '--any',
-		dest='any_state',
-		action='store_true',
-		default=False,
-		help='Look up if any state may take calls at this time.'
-	)
-
-	options = parser.parse_args()
-	
-	if not options.config:
-		options.config = open(DEFAULT_CONFIG, 'rb')
-	
-	# start doing things!
-	# parse configuration
-	t = Treacle(options.config)
-	
-	if options.any_state:
-		r = t.in_hours()
-	else:
-		r = t.in_hours(options.office)
-	
-	if options.standalone:
-		# throw exit code as appropriate
-		exit(0 if r else 1)
-	else:
-		# handle agi
-		print "lol agi %r" % r
-		
-	
-	
-
-
-if __name__ == '__main__':
-	main()
