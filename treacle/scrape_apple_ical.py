@@ -18,7 +18,7 @@ IGNORED_EVENTS = [
 def make_calendar():
 	cal = Calendar()
 	cal.add('prodid', '-//treacle-scrape_apple_ical//caramel.com.au//')
-	cal.add('version', '0.1.0')
+	cal.add('version', '2.0')
 	
 	return cal
 	

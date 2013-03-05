@@ -71,6 +71,8 @@ Where:
 * open hours are specified in 24-hour format seperated by a `-`.
 * there is an `@` seperator between the two parts.
 
+Hours are always specified in the timezone of the office.
+
 ## using in dialplans ##
 
 This program can be used in Asterisk dialplans as an AGI script, with the option `-a`:
