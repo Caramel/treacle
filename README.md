@@ -4,6 +4,7 @@ treacle is an AGI (Asterisk Gateway Interface) script which handles public holid
 
 ## installation ##
 
+	# easy_install pip
 	# pip install --upgrade -r requirements.txt
 	# python setup.py install
 
