@@ -24,6 +24,7 @@ setup(
 		'icalendar>=3.3',
 		'configparser>=3.2.0r2',
 		'argparse>=1.2.1',
+		'requests>=1.1.0',
 	],
 	extras_require=dict(test=['nose']),
 	packages=find_packages(),

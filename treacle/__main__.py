@@ -83,7 +83,10 @@ def main():
 		exit(0 if r else 1)
 	else:
 		# handle agi
-		print "SET VARIABLE %s \"%s\"" % (options.agi_variable, 1 if r else 0)
+		var = options.agi_variable
+		if var == None:
+			var = 'CARHOURS'
+		print "SET VARIABLE %s \"%s\"" % (var, 1 if r else 0)
 		
 	
 	
