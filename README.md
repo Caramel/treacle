@@ -79,13 +79,21 @@ This program can be used in Asterisk dialplans as an AGI script, with the option
 
 	[my_dialplan]
 	exten => s,1,AGI(/usr/local/bin/treacle,-a,-o,adel)
-	exten => s,2,GotoIf($["${CARHOURS}" = "0"]?100)
 	
-	; Business hours, 
-	exten => s,3,Queue(myqueue,t,,,30)
+	; Print returned output from treacle and make decision
+	exten => s,n,NoOp(Business Hours = ${CARHOURS})
+	exten => s,n,GotoIf(${CARHOURS}?open:closed)
+	
+	; Business hours
+	exten => s,n(open),Queue(myqueue,t,,,30)
+	
+	; Fall through if queue fails
 	
 	; Not available, and failure mode for queue
-	exten => s,100,Voicemail(100,u)
+	exten => s,n(closed),Voicemail(100,u)
+	
+	; Hangup when done.
+	exten => s,n,Hangup
 
 This will set the dialplan variable `CARHOURS` on completion.  This will be set to `0` if it is not business hours, or `1` if it is business hours for the location.
 
@@ -100,6 +108,8 @@ And set a different dialplan variable:
 
 	[my_dialplan]
 	exten => s,1,AGI(/usr/local/bin/treacle,-a,MYVAR,-o,melb)
+
+**Note:** On some systems (such as Red Hat), `distutils` installs treacle to `/usr/bin`, not `/usr/local/bin`.  Adjust this accordingly for your system.
 
 
 ## using standalone ##
