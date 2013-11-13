@@ -13,6 +13,7 @@ IGNORED_EVENTS = [
 	'daylight saving time ends',
 	'daylight saving time begins',
 	'valentine\'s day',
+	'remembrance day',
 ]
 
 def make_calendar():
