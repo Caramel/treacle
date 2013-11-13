@@ -4,9 +4,11 @@ treacle is an AGI (Asterisk Gateway Interface) script which handles public holid
 
 ## installation ##
 
-	# easy_install pip
-	# pip install --upgrade -r requirements.txt
-	# python setup.py install
+```sh
+easy_install pip
+pip install --upgrade -r requirements.txt
+python setup.py install
+```
 
 ## configuration ##
 
@@ -26,16 +28,18 @@ The same option name cannot appear multiple times in the same section, but optio
 
 For example:
 
-	[DEFAULT]
-	holidays = au_holidays.ics
+```ini
+[DEFAULT]
+holidays = au_holidays.ics
 
-	[adel]
-	
-	[melb]
-	holidays2 = vic_holidays.ics
-	
-	[auck]
-	holidays = nz_holidays.ics
+[adel]
+
+[melb]
+holidays2 = vic_holidays.ics
+
+[auck]
+holidays = nz_holidays.ics
+```
 	
 In this example:
 
@@ -63,7 +67,9 @@ This may be specified as a relative path, however it is not recommended (and you
 
 The opening hours for the office.  It is specified in the following format:
 
-	Mon,Tue,Wed,Thu,Fri@09:00-17:00
+```
+Mon,Tue,Wed,Thu,Fri@09:00-17:00
+```
 
 Where:
 
@@ -77,23 +83,25 @@ Hours are always specified in the timezone of the office.
 
 This program can be used in Asterisk dialplans as an AGI script, with the option `-a`:
 
-	[my_dialplan]
-	exten => s,1,AGI(/usr/local/bin/treacle,-a,-o,adel)
-	
-	; Print returned output from treacle and make decision
-	exten => s,n,NoOp(Business Hours = ${CARHOURS})
-	exten => s,n,GotoIf(${CARHOURS}?open:closed)
-	
-	; Business hours
-	exten => s,n(open),Queue(myqueue,t,,,30)
-	
-	; Fall through if queue fails
-	
-	; Not available, and failure mode for queue
-	exten => s,n(closed),Voicemail(100,u)
-	
-	; Hangup when done.
-	exten => s,n,Hangup
+```ini
+[my_dialplan]
+exten => s,1,AGI(/usr/local/bin/treacle,-a,-o,adel)
+
+; Print returned output from treacle and make decision
+exten => s,n,NoOp(Business Hours = ${CARHOURS})
+exten => s,n,GotoIf(${CARHOURS}?open:closed)
+
+; Business hours
+exten => s,n(open),Queue(myqueue,t,,,30)
+
+; Fall through if queue fails
+
+; Not available, and failure mode for queue
+exten => s,n(closed),Voicemail(100,u)
+
+; Hangup when done.
+exten => s,n,Hangup
+```
 
 This will set the dialplan variable `CARHOURS` on completion.  This will be set to `0` if it is not business hours, or `1` if it is business hours for the location.
 
@@ -101,13 +109,17 @@ In this example, it will send the caller into the queue `myqueue` if it is curre
 
 You can also check if any office is in business hours:
 
-	[my_dialplan]
-	exten => s,1,AGI(/usr/local/bin/treacle,-a,-A)
+```ini
+[my_dialplan]
+exten => s,1,AGI(/usr/local/bin/treacle,-a,-A)
+```
 
 And set a different dialplan variable:
 
-	[my_dialplan]
-	exten => s,1,AGI(/usr/local/bin/treacle,-a,MYVAR,-o,melb)
+```ini
+[my_dialplan]
+exten => s,1,AGI(/usr/local/bin/treacle,-a,MYVAR,-o,melb)
+```
 
 **Note:** On some systems (such as Red Hat), `distutils` installs treacle to `/usr/bin`, not `/usr/local/bin`.  Adjust this accordingly for your system.
 
@@ -116,14 +128,18 @@ And set a different dialplan variable:
 
 This can also be used outside of Asterisk, with the option `-s`:
 
-	$ treacle -s -o adel && echo "Adelaide Office Open"
-	$ treacle -s -o melb || echo "Melbourne Office Closed"
+```sh
+treacle -s -o adel && echo "Adelaide Office Open"
+treacle -s -o melb || echo "Melbourne Office Closed"
+```
 
 This will print `Adelaide Office Open` if the Adelaide office is currently open, and `Melbourne Office Closed` if the Melbourne office is closed.
 
 Like in AGI, you can use this to find if any office is open:
 
-	$ treacle -s -A && echo "There is an office open"
+```sh
+treacle -s -A && echo "There is an office open"
+```
 
 This will print `There is an office open` if any office is currently open.
 
@@ -131,7 +147,9 @@ This will print `There is an office open` if any office is currently open.
 
 For Australian users, a tool is included to scrape the Apple iCal public holiday feeds.  In order to use this after you have installed the software:
 
-	$ treacle_scrape
+```sh
+treacle_scrape
+```
 	
 This will produce the following files in the current directory:
 
@@ -139,5 +157,14 @@ This will produce the following files in the current directory:
 * `act_holidays.ics` - Contains holidays specific to ACT
 * ...and so on for `nsw`, `nt`, `qld`, `sa`, `tas`, `vic` and `wa`.
 
-This script will blindly overwrite these files!
+This script will blindly overwrite these files in the directory, so be careful!
 
+## licensing ##
+
+Copyright 2013 [Caramel](http://www.caramel.com.au).
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
