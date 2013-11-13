@@ -2,6 +2,8 @@
 
 treacle is an AGI (Asterisk Gateway Interface) script which handles public holidays and opening hours in different offices with different timezones and different public holidays.
 
+This allows conditional call routing in Asterisk, and also allows one system to route calls for different time zones and different offices.
+
 ## installation ##
 
 ```sh
