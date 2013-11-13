@@ -11,8 +11,8 @@ setup(
 		'timezones and different public holidays.',
 	author='Michael Farrell',
 	author_email='mfarrell@caramel.com.au',
-	url='https://dyno.uanywhere.com.au/gitweb/treacle',
-	license='INTERNAL',
+	url='https://github.com/Caramel/treacle',
+	license='LGPL3+',
 	install_requires=[
 		'distribute>=0.6.35',
 		'pytz>=2012j',
