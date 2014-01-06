@@ -4,15 +4,17 @@ from setuptools import setup, find_packages
 
 setup(
 	name='treacle',
-	version='0.1.0',
+	version='0.1.1',
 	description=
 		'treacle is an AGI (Asterisk Gateway Interface) script which handles '
 		'public holidays and opening hours in different offices with different '
 		'timezones and different public holidays.',
-	author='Michael Farrell',
-	author_email='mfarrell@caramel.com.au',
+	author='Caramel',
+	author_email='support@caramel.com.au',
 	url='https://github.com/Caramel/treacle',
 	license='LGPL3+',
+	zip_safe=False,
+	include_package_data=True,
 	install_requires=[
 		'distribute>=0.6.35',
 		'pytz>=2012j',

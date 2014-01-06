@@ -1,0 +1,4 @@
+include setup.py README.md COPYING COPYING.LESSER
+recursive-include treacle/tests *.ics
+global-exclude *~
+
