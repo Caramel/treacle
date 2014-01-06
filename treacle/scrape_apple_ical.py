@@ -28,6 +28,10 @@ IGNORED_EVENTS = [
 	'daylight saving time begins',
 	'valentine\'s day',
 	'remembrance day',
+
+	# not full-day holidays, only from 19:00 - 00:00
+	'christmas eve (sa)',
+	'new year\'s eve (sa)',
 ]
 
 def make_calendar():
@@ -51,29 +55,35 @@ def main():
 	
 	print "Processing calendar data..."
 	
-	states = ['ACT', 'NSW', 'NT', 'QLD', 'SA', 'TAS', 'VIC', 'WA']
+	valid_states = ['ACT', 'NSW', 'NT', 'QLD', 'SA', 'TAS', 'VIC', 'WA']
 	
 	state_cal = {}
 	all_cal = make_calendar()
 	
-	for state in states:	
+	for state in valid_states:
 		state_cal[state] = make_calendar()
 	
 	for event in cal.walk('VEVENT'):
-		event_name = event.decoded('SUMMARY')
-		if event_name.lower() in IGNORED_EVENTS:
+		event_name = event.decoded('SUMMARY').lower()
+		if filter(lambda x: x in event_name, IGNORED_EVENTS):
 			continue
 		
 		# see if there is a state or if it is for all
-		if '(' in event_name and not 'day in lieu' in event_name:
+		if '(' in event_name: # and not 'day in lieu' in event_name:
 			# it is just for certain states.
 			# eg:
 			#  - Easter Tuesday (TAS)
 			#  - Labour Day (ACT, NSW, SA, QLD)
-			states = event_name.split('(', 2)[1][:-1].split(',')
+			states = event_name.split('(', 2)[1].split(')')[0].split(',')
 			
+			if states == ['day in lieu']:
+				# only a day in lieu, switch to all-cal logic
+				all_cal.add_component(event)
+				continue
+
 			for state in states:
 				state = state.strip().upper()
+				assert state in valid_states, 'state=%r' % state
 				state_cal[state].add_component(event)
 		else:
 			# for all states
