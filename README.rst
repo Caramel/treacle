@@ -96,28 +96,24 @@ Each section takes the following directives:
 	For example, ``Australia/Adelaide`` or ``America/Chicago``.
 
 ``holidays``
-
 	A reference to an iCalendar file where public holidays that apply to this office is located.
 
 	This may be specified as a relative path, however it is not recommended (and you should use an absolute path instead).
 
 ``hours``
-^^^^^^^^^
+	The opening hours for the office. It is specified in the following format:
 
-The opening hours for the office. It is specified in the following
-format:
+	::
 
-::
+		Mon,Tue,Wed,Thu,Fri@09:00-17:00
 
-	Mon,Tue,Wed,Thu,Fri@09:00-17:00
+	Where:
 
-Where:
+	-  days of the week in your locale are specified in either long (``Monday``) or short (``Mon``) form, seperated by commas.
+	-  open hours are specified in 24-hour format seperated by a ``-``.
+	-  there is an ``@`` seperator between the two parts.
 
--  days of the week in your locale are specified in either long (``Monday``) or short (``Mon``) form, seperated by commas.
--  open hours are specified in 24-hour format seperated by a ``-``.
--  there is an ``@`` seperator between the two parts.
-
-Hours are always specified in the timezone of the office.
+	Hours are always specified in the timezone of the office.
 
 using in dialplans
 ------------------
