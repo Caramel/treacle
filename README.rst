@@ -14,8 +14,8 @@ voicemail after hours in their timezone, and not available on public
 holidays in their timezone.
 
 Complete documentation is available within the Sphinx documentation in the
-``doc`` folder of this distribution.  It is also viewable on the web at  .....
-
+``doc`` folder of this distribution.  It is also viewable on the web at
+http://treacle.readthedocs.org/
 
 
 
