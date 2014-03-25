@@ -38,3 +38,5 @@ nosetests.xml
 
 *~
 *.swp
+
+doc/build

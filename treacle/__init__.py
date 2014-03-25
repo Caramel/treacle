@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 treacle: Business hours routing for Asterisk calls.
-Copyright 2013 Caramel <http://www.caramel.com.au/>
+Copyright 2013-2014 Caramel <http://www.caramel.com.au/>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -18,8 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from __future__ import absolute_import
-from .treacle import Treacle
+from .treacle import Treacle, Office
 from .__main__ import main
 
-__all__ = ['Treacle', 'main']
+__all__ = ['Treacle', 'Office', 'main']
 
