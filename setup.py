@@ -9,6 +9,7 @@ setup(
 		'treacle is an AGI (Asterisk Gateway Interface) script which handles '
 		'public holidays and opening hours in different offices with different '
 		'timezones and different public holidays.',
+	long_description=open('README.rst').read(),
 	author='Caramel',
 	author_email='support@caramel.com.au',
 	url='https://github.com/Caramel/treacle',
@@ -40,6 +41,7 @@ setup(
 	
 	classifiers=[
 		# TODO
+		'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
 	],
 )
 
