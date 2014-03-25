@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from configparser import ConfigParser, NoOptionError
 from pytz import timezone, utc
 from calendar import day_abbr, day_name
-from datetime import datetime, date, time
+from datetime import datetime, date, time, timedelta
 from icalendar import Calendar
 
 __all__ = [
@@ -107,9 +107,22 @@ class Office(object):
 
 		for component in cal.walk('VEVENT'):
 			start = component.decoded('DTSTART')
-			end = component.decoded('DTEND')
+			try:
+				end = component.decoded('DTEND')
+			except KeyError:
+				# RFC allows DTEND to be missing
+				if isinstance(start, datetime):
+					# For DATETIME instances, the event ends immediately.
+					end = start
+				elif isinstance(start, date):
+					# For DATE instances, the event ends tomorrow
+					end = start + timedelta(days=1)
+				else:
+					raise KeyError, 'DTEND is missing and DTSTART is not of DATE or DATETIME type'
 
 			if isinstance(start, date) and not isinstance(start, datetime):
+				assert (isinstance(end, date) and not isinstance(end, datetime)), \
+					'DTSTART is of DATE type but DTEND is not of DATE type (got %r instead)' % type(end)
 				# All-day event, set times to midnight local time
 				start = datetime.combine(start, time.min)
 				end = datetime.combine(end, time.min)
