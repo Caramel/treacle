@@ -139,12 +139,6 @@ class Office(object):
 		# convert to local timezone
 		when = when.astimezone(self.tz)
 
-		# is it a public holiday?  check if it is any range
-		for hstart, hend in self.holidays:
-			if when >= hstart and when <= hend:
-				# it's inside a holiday area.
-				return False
-
 		# is it a work day?
 		if when.weekday() not in self.hours:
 			# not a work day
@@ -154,6 +148,14 @@ class Office(object):
 		for start, end in self.hours[when.weekday()]:
 			if start <= when.time() <= end:
 				# it's in that range
+
+				# is it a public holiday?  check if it is any range
+				for hstart, hend in self.holidays:
+					if when >= hstart and when <= hend:
+						# it's inside a holiday area.
+						return False
+
+				# not in a holiday zone, which means it's business time.
 				return True
 
 		# not in any range of hours, and was on a work day
