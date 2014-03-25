@@ -6,6 +6,14 @@ Data sources are given as iCalendar files.  You can create these yourself, or do
 
 Recurring events are not supported by this software.
 
+All events inside of the iCalendar file are read using the `icalendar <https://pypi.python.org/pypi/icalendar>`_ library, so will inherit it's limitations.
+
+Events that don't have a direct, Olson timezone name on them won't carry timezone information.  In this case, ``treacle`` will make the events be interpreted in the timezone for the office being read (this includes those inherited from defaults).  If any calendar entry lands within a daylight savings transition point, if the time is ambiguous or non-existent, it is assumed to be within "standard" time.
+
+This applies even if there is ``VTIMEZONE`` information in the calendar file.  This is a `known issue in icalendar <https://github.com/collective/icalendar/issues/44>`_.
+
+
+
 .. highlight:: console
 
 

@@ -17,10 +17,10 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from configparser import ConfigParser
+from configparser import ConfigParser, NoOptionError
 from pytz import timezone, utc
 from calendar import day_abbr, day_name
-from datetime import datetime
+from datetime import datetime, date, time
 from icalendar import Calendar
 
 __all__ = [
@@ -51,16 +51,15 @@ class Office(object):
 		self.hours = {}
 		self.holidays = []
 
+		# Read time zone first, other things need it.  Throws error if invalid.
+		try:
+			self.tz = timezone(config.get(section, 'tz'))
+		except NoOptionError: pass
+
 		for option, value in config.items(section):
 			if option.startswith('holidays'):
 				# read in a holidays file
 				self.holidays.extend(self._read_holidays(value))
-
-
-			elif option == 'tz':
-				# read timezone
-				# throws error if invalid
-				self.tz = timezone(value)
 
 			elif option.startswith('hours'):
 				# read hours
@@ -93,7 +92,9 @@ class Office(object):
 
 					self.hours[day_i].append((start, end))
 
-
+			elif option == 'tz':
+				# already parsed above.
+				pass
 			else:
 				raise ValueError, 'unknown option %r' % option
 
@@ -102,9 +103,26 @@ class Office(object):
 		Read holidays from an iCalendar-format file.
 		"""
 		cal = Calendar.from_ical(open(filename, 'rb').read())
+		holidays = []
 
 		for component in cal.walk('VEVENT'):
-			yield component.decoded('DTSTART')
+			start = component.decoded('DTSTART')
+			end = component.decoded('DTEND')
+
+			if isinstance(start, date) and not isinstance(start, datetime):
+				# All-day event, set times to midnight local time
+				start = datetime.combine(start, time.min)
+				end = datetime.combine(end, time.min)
+
+			# check for TZ data
+			if start.tzinfo is None or end.tzinfo is None:
+				# One of them is missing tzinfo, replace both with this office's
+				# local time.  Assume standard time if ambiguous.
+				start = self.tz.localize(start, is_dst=False)
+				end = self.tz.localize(end, is_dst=False)
+
+			yield (start, end)
+
 
 	def in_hours(self, when):
 		"""
@@ -121,9 +139,11 @@ class Office(object):
 		# convert to local timezone
 		when = when.astimezone(self.tz)
 
-		# is it a public holiday?
-		if when.date() in self.holidays:
-			return False
+		# is it a public holiday?  check if it is any range
+		for hstart, hend in self.holidays:
+			if when >= hstart and when <= hend:
+				# it's inside a holiday area.
+				return False
 
 		# is it a work day?
 		if when.weekday() not in self.hours:
