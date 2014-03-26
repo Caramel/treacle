@@ -14,9 +14,11 @@ voicemail after hours in their timezone, and not available on public
 holidays in their timezone.
 
 Complete documentation is available within the Sphinx documentation in the
-``doc`` folder of this distribution.  It is also viewable on the web at
-http://treacle.readthedocs.org/
+``doc`` folder of this distribution.
 
+* `Treacle on PyPI (releases) <https://pypi.python.org/pypi/treacle>`_
+* `GitHub repository <https://github.com/Caramel/treacle/>`_
+* `On-line Documentation <http://treacle.readthedocs.org/>`_
 
 
 licensing

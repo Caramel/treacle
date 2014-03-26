@@ -13,6 +13,10 @@ can give each a different number, and their calls will be routed to
 voicemail after hours in their timezone, and not available on public
 holidays in their timezone.
 
+* `Treacle on PyPI (releases) <https://pypi.python.org/pypi/treacle>`_
+* `GitHub repository <https://github.com/Caramel/treacle/>`_
+* `On-line Documentation <http://treacle.readthedocs.org/>`_
+
 Contents:
 
 .. toctree::
