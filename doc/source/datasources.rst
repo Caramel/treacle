@@ -12,6 +12,7 @@ Events that don't have a direct, Olson timezone name on them won't carry timezon
 
 This applies even if there is ``VTIMEZONE`` information in the calendar file.  This is a `known issue in icalendar <https://github.com/collective/icalendar/issues/44>`_.
 
+
 Australian Holiday Data
 =======================
 
@@ -53,4 +54,24 @@ careful!
 	For example, in South Australia, Christmas Eve and New Years Eve are public holidays for part of the day.  These aren't listed at all.
 
 	In Tasmania, there are holidays that only apply for certain cities.  Apple appears to only provide information about holidays in Hobart.
+
+
+Special office closures
+=======================
+
+If you wish to have a special calendar with office closures in it, you can create another iCalendar file with these closures in it, and add it as a holiday source.
+
+Because this software doesn't run as a daemon, you can update the calendar file whenever you like, and this will apply to all calls recieved after this point.  For example::
+
+	[DEFAULT]
+	holidays = /etc/treacle/holidays/au_holidays.ics
+	holidays_closed = /etc/treacle/holidays/exampleco_cloures.ics
+
+	[adel]
+	holidays_sa = /etc/treacle/holidays/sa_holidays.ics
+	hours = Mon,Tue,Wed,Thu,Fri@09:00-17:30
+
+The holidays ICS files can be updated from an external source, and :file:`exampleco_closures.ics` would contain information about your office closures.
+
+treacle supports part-of-day events (as of v0.1.2), so you can add an event that would close your office early for the day, or start late.  You can also make these apply to only certain offices.
 
