@@ -12,6 +12,17 @@ Events that don't have a direct, Olson timezone name on them won't carry timezon
 
 This applies even if there is ``VTIMEZONE`` information in the calendar file.  This is a `known issue in icalendar <https://github.com/collective/icalendar/issues/44>`_.
 
+Australian Holiday Data
+=======================
+
+Official government data sources
+--------------------------------
+
+Some states release official iCalendar feeds of public holidays:
+
+* `Australian Capital Territory <http://www.cmd.act.gov.au/communication/holidays/public-holidays-ical/public-holidays>`_
+* `South Australia <http://www.safework.sa.gov.au/uploaded_files/holidayCalendar.ics>`_
+* `Victoria <http://www.vic.gov.au/ical/holidays.html>`_
 
 
 .. highlight:: console
