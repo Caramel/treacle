@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name='treacle',
-	version='0.1.1',
+	version='0.1.2',
 	description=
 		'treacle is an AGI (Asterisk Gateway Interface) script which handles '
 		'public holidays and opening hours in different offices with different '
@@ -18,7 +18,7 @@ setup(
 	include_package_data=True,
 	install_requires=[
 		'distribute>=0.6.35',
-		'pytz>=2012j',
+		'pytz>=2014.1.1',
 
 		# There is an issue with iCalendar not pulling in this dependency, which is
 		# only fixed in the development version.

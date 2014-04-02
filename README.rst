@@ -24,7 +24,7 @@ Complete documentation is available within the Sphinx documentation in the
 licensing
 ---------
 
-Copyright 2013-2014 `Caramel <http://www.caramel.com.au>`_.
+Copyright 2013 - 2014 `Caramel <http://www.caramel.com.au>`_.
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU Lesser General Public License as published by

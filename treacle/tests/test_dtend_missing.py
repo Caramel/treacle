@@ -22,8 +22,6 @@ from __future__ import absolute_import
 from os import environ
 environ['LANG'] = 'C'
 from treacle.treacle import Treacle
-from pytz import timezone
-from datetime import datetime
 from os.path import dirname, abspath, join
 
 
@@ -31,8 +29,6 @@ TEST_PATH = abspath(dirname(__file__))
 
 
 def dtend_missing_test():
-	sa = timezone('Australia/Adelaide')
-
 	# setup some configuration for Treacle to use
 	treacle = Treacle(config=dict(
 	
