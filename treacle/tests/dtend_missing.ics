@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//www.marudot.com//iCal Event Maker
+X-WR-CALNAME:South Australia Public Holidays
+X-WR-TIMEZONE:Australia/Adelaide
+BEGIN:VEVENT
+DTSTAMP:20140313T012254Z
+UID:20140313T012254Z-1399883582@marudot.com
+DTSTART;VALUE=DATE:20140421
+SUMMARY:Easter Monday
+DESCRIPTION:The day after Easter Sunday. Varies according to lunar cycle.
+LOCATION:South Australia
+END:VEVENT
+END:VCALENDAR
+
